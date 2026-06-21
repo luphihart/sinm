@@ -26,7 +26,11 @@ class ReportExportService
         $grades = $murid->nilai()
             ->where('semester_id', $semester->id)
             ->with('mataPelajaran')
-            ->get();
+            ->get()
+            ->sortBy(function ($n) {
+                return $n->mataPelajaran->urutan ?? 999;
+            })
+            ->values();
 
         $rankings = $this->rankingEngine->getStudentRankings($murid->id, $semester->id);
 
@@ -56,7 +60,11 @@ class ReportExportService
             $grades = $murid->nilai()
                 ->where('semester_id', $semester->id)
                 ->with('mataPelajaran')
-                ->get();
+                ->get()
+                ->sortBy(function ($n) {
+                    return $n->mataPelajaran->urutan ?? 999;
+                })
+                ->values();
 
             if ($grades->isNotEmpty()) {
                 $rankings = $this->rankingEngine->getStudentRankings($murid->id, $semester->id);

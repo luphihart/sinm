@@ -165,4 +165,53 @@ class MuridController extends Controller
             return redirect()->route('admin.murid.index')->with('error', 'Import gagal: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Reset student password to default (siswa123).
+     */
+    public function resetPassword($id)
+    {
+        $murid = $this->muridRepo->find($id);
+        if (!$murid || !$murid->user) {
+            return redirect()->route('admin.murid.index')->with('error', 'Murid atau akun tidak ditemukan.');
+        }
+
+        try {
+            $murid->user->update([
+                'password' => Hash::make('siswa123')
+            ]);
+            return redirect()->route('admin.murid.index')->with('success', 'Password murid ' . $murid->nama_lengkap . ' berhasil di-reset ke default (siswa123).');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.murid.index')->with('error', 'Gagal mereset password: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Bulk reset student passwords to default (siswa123).
+     */
+    public function bulkResetPassword(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            'murid_ids' => 'required|array',
+            'murid_ids.*' => 'exists:murid,id',
+        ], [
+            'murid_ids.required' => 'Pilih setidaknya satu murid untuk di-reset.',
+        ]);
+
+        $ids = $request->input('murid_ids');
+
+        DB::beginTransaction();
+        try {
+            $userIds = Murid::whereIn('id', $ids)->pluck('user_id');
+            User::whereIn('id', $userIds)->update([
+                'password' => Hash::make('siswa123')
+            ]);
+
+            DB::commit();
+            return redirect()->route('admin.murid.index')->with('success', count($ids) . ' password murid berhasil di-reset ke default (siswa123).');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('admin.murid.index')->with('error', 'Gagal mereset password massal: ' . $e->getMessage());
+        }
+    }
 }

@@ -53,7 +53,11 @@ class DashboardController extends Controller
             $grades = $murid->nilai()
                 ->where('semester_id', $selectedSemesterId)
                 ->with('mataPelajaran')
-                ->get();
+                ->get()
+                ->sortBy(function ($n) {
+                    return $n->mataPelajaran->urutan ?? 999;
+                })
+                ->values();
 
             $rankings = $this->rankingEngine->getStudentRankings($murid->id, $selectedSemesterId);
         }

@@ -24,7 +24,11 @@ class NilaiRepository extends BaseRepository implements NilaiRepositoryInterface
         return $this->model->where('murid_id', $studentId)
                            ->where('semester_id', $semesterId)
                            ->with('mataPelajaran')
-                           ->get();
+                           ->get()
+                           ->sortBy(function ($n) {
+                               return $n->mataPelajaran->urutan ?? 999;
+                           })
+                           ->values();
     }
 
     public function checkDuplicate($studentId, $semesterId, $mapelId, $excludeId = null)

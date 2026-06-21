@@ -10,6 +10,9 @@
             <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
                 <h5 class="fw-700 m-0"><i class="fa-solid fa-users-viewfinder me-2 text-primary"></i>Daftar Murid</h5>
                 <div class="d-flex gap-2">
+                    <button type="submit" form="bulkResetForm" class="btn btn-outline-warning d-none" id="btnBulkReset" onclick="return confirm('Apakah Anda yakin ingin mereset password semua murid yang dipilih ke default (siswa123)?')">
+                        <i class="fa-solid fa-lock-open me-1"></i> Reset Password Massal
+                    </button>
                     <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#importModal">
                         <i class="fa-solid fa-file-import me-2"></i> Import Murid
                     </button>
@@ -19,99 +22,112 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-hover align-middle datatable-custom">
-                    <thead>
-                        <tr>
-                            <th width="50px" class="d-none d-sm-table-cell">No</th>
-                            <th class="d-none d-md-table-cell">NIS / NISN</th>
-                            <th>Nama Lengkap</th>
-                            <th class="d-none d-md-table-cell">L/P</th>
-                            <th class="d-none d-md-table-cell">Kelas</th>
-                            <th class="d-none d-md-table-cell">Angkatan</th>
-                            <th class="d-none d-sm-table-cell">Status</th>
-                            <th width="120px" class="text-end">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($murids as $index => $murid)
+            <form action="{{ route('admin.murid.bulk-reset-password') }}" method="POST" id="bulkResetForm">
+                @csrf
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle datatable-custom">
+                        <thead>
                             <tr>
-                                <td class="d-none d-sm-table-cell">{{ $index + 1 }}</td>
-                                <td class="d-none d-md-table-cell">
-                                    <span class="fw-bold d-block">{{ $murid->nis }}</span>
-                                    <span class="text-muted small">{{ $murid->nisn ?? '-' }}</span>
-                                </td>
-                                <td>
-                                    <span class="fw-600 d-block">{{ $murid->nama_lengkap }}</span>
-                                    <span class="text-muted small d-none d-md-block" style="font-size: 0.75rem;"><i class="fa-solid fa-user-lock me-1"></i>Username: {{ $murid->user->username ?? '-' }}</span>
-                                    
-                                    <!-- Mobile details stack -->
-                                    <div class="d-md-none text-muted mt-1" style="font-size: 0.8rem; line-height: 1.4;">
-                                        <span class="d-block"><i class="fa-solid fa-id-card me-1"></i>NIS: {{ $murid->nis }} | Kelas: {{ $murid->kelas->nama_kelas ?? 'Tanpa Kelas' }}</span>
-                                        <span class="d-block"><i class="fa-solid fa-calendar me-1"></i>Angkatan: {{ $murid->angkatan }} ({{ $murid->jenis_kelamin }})</span>
-                                        <div class="mt-1 d-sm-none">
-                                            @if($murid->status == 'aktif')
-                                                <span class="badge bg-success" style="font-size: 0.7rem; padding: 2px 6px;">Aktif</span>
-                                            @elseif($murid->status == 'lulus')
-                                                <span class="badge bg-secondary" style="font-size: 0.7rem; padding: 2px 6px;">Lulus</span>
-                                            @elseif($murid->status == 'pindah')
-                                                <span class="badge bg-warning text-dark" style="font-size: 0.7rem; padding: 2px 6px;">Pindah</span>
-                                            @else
-                                                <span class="badge bg-danger" style="font-size: 0.7rem; padding: 2px 6px;">Keluar</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="d-none d-md-table-cell">
-                                    @if($murid->jenis_kelamin == 'L')
-                                        <span class="badge bg-info-subtle text-info rounded-circle px-2 py-1" title="Laki-laki">L</span>
-                                    @else
-                                        <span class="badge bg-danger-subtle text-danger rounded-circle px-2 py-1" title="Perempuan">P</span>
-                                    @endif
-                                </td>
-                                <td class="d-none d-md-table-cell"><span class="badge bg-primary-subtle text-primary">{{ $murid->kelas->nama_kelas ?? 'Tanpa Kelas' }}</span></td>
-                                <td class="d-none d-md-table-cell text-muted small fw-600">{{ $murid->angkatan }}</td>
-                                <td class="d-none d-sm-table-cell">
-                                    @if($murid->status == 'aktif')
-                                        <span class="badge bg-success">Aktif</span>
-                                    @elseif($murid->status == 'lulus')
-                                        <span class="badge bg-secondary">Lulus</span>
-                                    @elseif($murid->status == 'pindah')
-                                        <span class="badge bg-warning text-dark">Pindah</span>
-                                    @else
-                                        <span class="badge bg-danger">Keluar</span>
-                                    @endif
-                                </td>
-                                <td class="text-end">
-                                    <div class="btn-group">
-                                        <button class="btn btn-outline-secondary btn-sm" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#editModal"
-                                                data-id="{{ $murid->id }}"
-                                                data-nis="{{ $murid->nis }}"
-                                                data-nisn="{{ $murid->nisn }}"
-                                                data-nama="{{ $murid->nama_lengkap }}"
-                                                data-jk="{{ $murid->jenis_kelamin }}"
-                                                data-kelas="{{ $murid->kelas_id }}"
-                                                data-angkatan="{{ $murid->angkatan }}"
-                                                data-status="{{ $murid->status }}">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                        <button class="btn btn-outline-danger btn-sm" 
-                                                onclick="confirmDelete('{{ $murid->id }}', '{{ $murid->nama_lengkap }}')">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </div>
-                                    <form id="delete-form-{{ $murid->id }}" action="{{ route('admin.murid.destroy', $murid->id) }}" method="POST" class="d-none">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                </td>
+                                <th width="40px"><input type="checkbox" id="checkAll" class="form-check-input"></th>
+                                <th width="50px" class="d-none d-sm-table-cell">No</th>
+                                <th class="d-none d-md-table-cell">NIS / NISN</th>
+                                <th>Nama Lengkap</th>
+                                <th class="d-none d-md-table-cell">L/P</th>
+                                <th class="d-none d-md-table-cell">Kelas</th>
+                                <th class="d-none d-md-table-cell">Angkatan</th>
+                                <th class="d-none d-sm-table-cell">Status</th>
+                                <th width="150px" class="text-end">Aksi</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @foreach($murids as $index => $murid)
+                                <tr>
+                                    <td><input type="checkbox" name="murid_ids[]" value="{{ $murid->id }}" class="form-check-input murid-checkbox"></td>
+                                    <td class="d-none d-sm-table-cell">{{ $index + 1 }}</td>
+                                    <td class="d-none d-md-table-cell">
+                                        <span class="fw-bold d-block">{{ $murid->nis }}</span>
+                                        <span class="text-muted small">{{ $murid->nisn ?? '-' }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="fw-600 d-block">{{ $murid->nama_lengkap }}</span>
+                                        <span class="text-muted small d-none d-md-block" style="font-size: 0.75rem;"><i class="fa-solid fa-user-lock me-1"></i>Username: {{ $murid->user->username ?? '-' }}</span>
+                                        
+                                        <!-- Mobile details stack -->
+                                        <div class="d-md-none text-muted mt-1" style="font-size: 0.8rem; line-height: 1.4;">
+                                            <span class="d-block"><i class="fa-solid fa-id-card me-1"></i>NIS: {{ $murid->nis }} | Kelas: {{ $murid->kelas->nama_kelas ?? 'Tanpa Kelas' }}</span>
+                                            <span class="d-block"><i class="fa-solid fa-calendar me-1"></i>Angkatan: {{ $murid->angkatan }} ({{ $murid->jenis_kelamin }})</span>
+                                            <div class="mt-1 d-sm-none">
+                                                @if($murid->status == 'aktif')
+                                                    <span class="badge bg-success" style="font-size: 0.7rem; padding: 2px 6px;">Aktif</span>
+                                                @elseif($murid->status == 'lulus')
+                                                    <span class="badge bg-secondary" style="font-size: 0.7rem; padding: 2px 6px;">Lulus</span>
+                                                @elseif($murid->status == 'pindah')
+                                                    <span class="badge bg-warning text-dark" style="font-size: 0.7rem; padding: 2px 6px;">Pindah</span>
+                                                @else
+                                                    <span class="badge bg-danger" style="font-size: 0.7rem; padding: 2px 6px;">Keluar</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="d-none d-md-table-cell">
+                                        @if($murid->jenis_kelamin == 'L')
+                                            <span class="badge bg-info-subtle text-info rounded-circle px-2 py-1" title="Laki-laki">L</span>
+                                        @else
+                                            <span class="badge bg-danger-subtle text-danger rounded-circle px-2 py-1" title="Perempuan">P</span>
+                                        @endif
+                                    </td>
+                                    <td class="d-none d-md-table-cell"><span class="badge bg-primary-subtle text-primary">{{ $murid->kelas->nama_kelas ?? 'Tanpa Kelas' }}</span></td>
+                                    <td class="d-none d-md-table-cell text-muted small fw-600">{{ $murid->angkatan }}</td>
+                                    <td class="d-none d-sm-table-cell">
+                                        @if($murid->status == 'aktif')
+                                            <span class="badge bg-success">Aktif</span>
+                                        @elseif($murid->status == 'lulus')
+                                            <span class="badge bg-secondary">Lulus</span>
+                                        @elseif($murid->status == 'pindah')
+                                            <span class="badge bg-warning text-dark">Pindah</span>
+                                        @else
+                                            <span class="badge bg-danger">Keluar</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-outline-warning btn-sm" 
+                                                    onclick="confirmResetPassword('{{ $murid->id }}', '{{ $murid->nama_lengkap }}')"
+                                                    title="Reset Password ke default (siswa123)">
+                                                <i class="fa-solid fa-key"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#editModal"
+                                                    data-id="{{ $murid->id }}"
+                                                    data-nis="{{ $murid->nis }}"
+                                                    data-nisn="{{ $murid->nisn }}"
+                                                    data-nama="{{ $murid->nama_lengkap }}"
+                                                    data-jk="{{ $murid->jenis_kelamin }}"
+                                                    data-kelas="{{ $murid->kelas_id }}"
+                                                    data-angkatan="{{ $murid->angkatan }}"
+                                                    data-status="{{ $murid->status }}">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger btn-sm" 
+                                                    onclick="confirmDelete('{{ $murid->id }}', '{{ $murid->nama_lengkap }}')">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+                                        <form id="delete-form-{{ $murid->id }}" action="{{ route('admin.murid.destroy', $murid->id) }}" method="POST" class="d-none">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                        <form id="reset-password-form-{{ $murid->id }}" action="{{ route('admin.murid.reset-password', $murid->id) }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -320,6 +336,59 @@
             document.getElementById(`delete-form-${id}`).submit();
         }
     }
+
+    function confirmResetPassword(id, name) {
+        if (confirm(`Apakah Anda yakin ingin mereset password murid "${name}" ke default (siswa123)?`)) {
+            document.getElementById(`reset-password-form-${id}`).submit();
+        }
+    }
+
+    $(document).ready(function() {
+        var table = $('.datatable-custom').DataTable();
+
+        // Handle checkAll checkbox
+        $(document).on('change', '#checkAll', function() {
+            var isChecked = this.checked;
+            table.$('input.murid-checkbox').prop('checked', isChecked);
+            toggleBulkResetButton();
+        });
+
+        // Handle individual row checkboxes
+        $(document).on('change', 'input.murid-checkbox', function() {
+            var totalCheckboxes = table.$('input.murid-checkbox').length;
+            var checkedCheckboxes = table.$('input.murid-checkbox:checked').length;
+            
+            $('#checkAll').prop('checked', totalCheckboxes === checkedCheckboxes && totalCheckboxes > 0);
+            toggleBulkResetButton();
+        });
+
+        // Toggle bulk reset button visibility
+        function toggleBulkResetButton() {
+            var checkedCount = table.$('input.murid-checkbox:checked').length;
+            if (checkedCount > 0) {
+                $('#btnBulkReset').removeClass('d-none');
+            } else {
+                $('#btnBulkReset').addClass('d-none');
+            }
+        }
+
+        // Handle bulk form submit to include checkboxes from other pages
+        $('#bulkResetForm').on('submit', function(e) {
+            var form = this;
+            
+            // Loop through all checked checkboxes across all pages
+            table.$('input.murid-checkbox:checked').each(function() {
+                if (!$.contains(document, this)) {
+                    $(form).append(
+                        $('<input>')
+                            .attr('type', 'hidden')
+                            .attr('name', this.name)
+                            .val(this.value)
+                    );
+                }
+            });
+        });
+    });
 
     // Dynamic Edit Modal data pre-fill
     $('#editModal').on('show.bs.modal', function (event) {

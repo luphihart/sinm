@@ -39,6 +39,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/murid/import/preview', [MuridController::class, 'importPreview'])->name('murid.import.preview');
     Route::post('/murid/import/confirm', [MuridController::class, 'importConfirm'])->name('murid.import.confirm');
     Route::get('/murid/import/template', [MuridController::class, 'downloadTemplate'])->name('murid.import.template');
+    Route::post('/murid/{id}/reset-password', [MuridController::class, 'resetPassword'])->name('murid.reset-password');
+    Route::post('/murid/bulk-reset-password', [MuridController::class, 'bulkResetPassword'])->name('murid.bulk-reset-password');
 
     // CRUD Mata Pelajaran (Mapel)
     Route::resource('mapel', MataPelajaranController::class)->except(['create', 'show', 'edit']);
