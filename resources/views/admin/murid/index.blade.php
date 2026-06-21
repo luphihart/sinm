@@ -114,13 +114,6 @@
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </div>
-                                        <form id="delete-form-{{ $murid->id }}" action="{{ route('admin.murid.destroy', $murid->id) }}" method="POST" class="d-none">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                        <form id="reset-password-form-{{ $murid->id }}" action="{{ route('admin.murid.reset-password', $murid->id) }}" method="POST" class="d-none">
-                                            @csrf
-                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -128,6 +121,16 @@
                     </table>
                 </div>
             </form>
+
+            @foreach($murids as $murid)
+                <form id="delete-form-{{ $murid->id }}" action="{{ route('admin.murid.destroy', $murid->id) }}" method="POST" class="d-none">
+                    @csrf
+                    @method('DELETE')
+                </form>
+                <form id="reset-password-form-{{ $murid->id }}" action="{{ route('admin.murid.reset-password', $murid->id) }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            @endforeach
         </div>
     </div>
 </div>
