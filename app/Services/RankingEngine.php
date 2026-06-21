@@ -18,7 +18,7 @@ class RankingEngine
                 sub.nis,
                 sub.avg_nilai,
                 sub.total_nilai,
-                DENSE_RANK() OVER (ORDER BY sub.avg_nilai DESC) as rank_kelas
+                RANK() OVER (ORDER BY sub.avg_nilai DESC) as rank_kelas
             FROM (
                 SELECT 
                     m.id as murid_id,
@@ -53,7 +53,7 @@ class RankingEngine
                 sub.nama_kelas,
                 sub.avg_nilai,
                 sub.total_nilai,
-                DENSE_RANK() OVER (ORDER BY sub.avg_nilai DESC) as rank_paralel
+                RANK() OVER (ORDER BY sub.avg_nilai DESC) as rank_paralel
             FROM (
                 SELECT 
                     m.id as murid_id,
@@ -110,7 +110,7 @@ class RankingEngine
                     sub.murid_id,
                     sub.avg_nilai,
                     sub.total_nilai,
-                    DENSE_RANK() OVER (ORDER BY sub.avg_nilai DESC) as rank_kelas,
+                    RANK() OVER (ORDER BY sub.avg_nilai DESC) as rank_kelas,
                     COUNT(*) OVER () as total_murid_kelas
                 FROM (
                     SELECT 
@@ -139,7 +139,7 @@ class RankingEngine
                     sub.murid_id,
                     sub.avg_nilai,
                     sub.total_nilai,
-                    DENSE_RANK() OVER (ORDER BY sub.avg_nilai DESC) as rank_paralel,
+                    RANK() OVER (ORDER BY sub.avg_nilai DESC) as rank_paralel,
                     COUNT(*) OVER () as total_murid_paralel
                 FROM (
                     SELECT 

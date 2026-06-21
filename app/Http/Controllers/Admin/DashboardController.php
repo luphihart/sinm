@@ -37,7 +37,7 @@ class DashboardController extends Controller
                     sub.nis,
                     sub.nama_kelas,
                     sub.avg_nilai,
-                    DENSE_RANK() OVER (ORDER BY sub.avg_nilai DESC) as ranking
+                    RANK() OVER (ORDER BY sub.avg_nilai DESC) as ranking
                 FROM (
                     SELECT 
                         m.id as murid_id,
@@ -68,7 +68,7 @@ class DashboardController extends Controller
                     sub.nis,
                     sub.nama_kelas,
                     sub.avg_nilai,
-                    DENSE_RANK() OVER (ORDER BY sub.avg_nilai DESC) as ranking
+                    RANK() OVER (ORDER BY sub.avg_nilai DESC) as ranking
                 FROM (
                     SELECT 
                         m.id as murid_id,
