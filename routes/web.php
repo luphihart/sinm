@@ -35,12 +35,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('kelas', KelasController::class)->except(['create', 'show', 'edit']);
 
     // CRUD Murid
-    Route::resource('murid', MuridController::class)->except(['create', 'show', 'edit']);
     Route::post('/murid/import/preview', [MuridController::class, 'importPreview'])->name('murid.import.preview');
     Route::post('/murid/import/confirm', [MuridController::class, 'importConfirm'])->name('murid.import.confirm');
     Route::get('/murid/import/template', [MuridController::class, 'downloadTemplate'])->name('murid.import.template');
     Route::post('/murid/{id}/reset-password', [MuridController::class, 'resetPassword'])->name('murid.reset-password');
     Route::post('/murid/bulk-reset-password', [MuridController::class, 'bulkResetPassword'])->name('murid.bulk-reset-password');
+    Route::resource('murid', MuridController::class)->except(['create', 'show', 'edit']);
 
     // CRUD Mata Pelajaran (Mapel)
     Route::resource('mapel', MataPelajaranController::class)->except(['create', 'show', 'edit']);
