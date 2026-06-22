@@ -39,7 +39,7 @@ class DashboardController extends Controller
         $selectedSemesterId = $request->input('semester_id') ?? $latestGradedSemesterId ?? ($semesters->first()->id ?? null);
         $selectedSemester = Semester::find($selectedSemesterId);
 
-        $grades = [];
+        $grades = collect();
         $rankings = [
             'total_nilai' => 0,
             'avg_nilai' => 0,
