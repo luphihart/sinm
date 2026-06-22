@@ -124,7 +124,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($rankingList as $index => $rank)
+                        @foreach($rankingList as $index => $rank)
                             @php
                                 $isEligible = $rank->rank_snbp <= $selectedJurusan->kuota_snbp;
                             @endphp
@@ -147,11 +147,7 @@
                                     @endif
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center text-muted">Belum ada murid yang mendaftar di jurusan ini.</td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
