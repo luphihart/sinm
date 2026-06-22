@@ -79,7 +79,7 @@
             <p class="text-muted small">Data pengaturan ini digunakan secara otomatis di seluruh sistem, termasuk:</p>
             <ul class="text-muted small ps-3">
                 <li class="mb-2">Nama Aplikasi yang tertampil di Header, Title bar, dan halaman login secara global.</li>
-                <li class="mb-2">Kop surat pada cetak **PDF Rapor Semester** dan **PDF Transkrip Lengkap**.</li>
+                <li class="mb-2">Kop surat pada cetak <strong>PDF Rapor Semester</strong> dan <strong>PDF Transkrip Lengkap</strong>.</li>
                 <li class="mb-2">Tanda tangan Kepala Sekolah di bagian bawah lembar laporan PDF.</li>
                 <li class="mb-2">Teks Footer di bagian bawah halaman login dan dashboard sistem.</li>
             </ul>

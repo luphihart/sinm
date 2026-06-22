@@ -95,10 +95,10 @@
                 <div class="small text-muted" style="line-height: 1.6;">
                     <h6 class="fw-bold text-dark mb-2">Aturan Seleksi Eligible Sekolah:</h6>
                     <ul class="ps-3 mb-0">
-                        <li class="mb-2">Hanya siswa yang berstatus **"Terdaftar"** secara mandiri yang akan dirangking oleh sistem.</li>
-                        <li class="mb-2">Pemeringkatan didasarkan pada **rata-rata nilai rapor seluruh mata pelajaran Semester 1 s.d. Semester 5**.</li>
-                        <li class="mb-2">Siswa dengan peringkat paralel jurusan **1 sampai {{ $kuota }}** secara otomatis diklasifikasikan sebagai **Eligible** untuk SNBP.</li>
-                        <li class="mb-2">Siswa dengan peringkat di luar kuota (peringkat {{ $kuota + 1 }} ke bawah) diklasifikasikan sebagai **Cadangan**. Jika ada siswa eligible yang mundur sebelum deadline, peringkat di bawahnya akan otomatis naik mengisi kekosongan kuota.</li>
+                        <li class="mb-2">Hanya siswa yang berstatus <strong>"Terdaftar"</strong> secara mandiri yang akan dirangking oleh sistem.</li>
+                        <li class="mb-2">Pemeringkatan didasarkan pada <strong>rata-rata nilai rapor seluruh mata pelajaran Semester 1 s.d. Semester 5</strong>.</li>
+                        <li class="mb-2">Siswa dengan peringkat paralel jurusan <strong>1 sampai {{ $kuota }}</strong> secara otomatis diklasifikasikan sebagai <strong>Eligible</strong> untuk SNBP.</li>
+                        <li class="mb-2">Siswa dengan peringkat di luar kuota (peringkat {{ $kuota + 1 }} ke bawah) diklasifikasikan sebagai <strong>Cadangan</strong>. Jika ada siswa eligible yang mundur sebelum deadline, peringkat di bawahnya akan otomatis naik mengisi kekosongan kuota.</li>
                     </ul>
                 </div>
             </div>
