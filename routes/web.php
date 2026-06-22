@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\NilaiController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Murid\DashboardController as MuridDashboardController;
 use App\Http\Controllers\Murid\NilaiController as MuridNilaiController;
+use App\Http\Controllers\Admin\SnbpController as AdminSnbpController;
+use App\Http\Controllers\Murid\SnbpController as MuridSnbpController;
 
 // 1. Redirect Root
 Route::get('/', function () {
@@ -73,6 +75,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/nilai/export/excel/kelas', [NilaiController::class, 'exportExcelRankingKelas'])->name('nilai.export.excel.kelas');
     Route::get('/nilai/export/excel/jurusan', [NilaiController::class, 'exportExcelRankingJurusan'])->name('nilai.export.excel.jurusan');
 
+    // SNBP Eligible Selection
+    Route::get('/snbp', [AdminSnbpController::class, 'index'])->name('snbp.index');
+    Route::post('/snbp/settings', [AdminSnbpController::class, 'updateSettings'])->name('snbp.settings');
+    Route::post('/snbp/quota', [AdminSnbpController::class, 'updateQuota'])->name('snbp.quota');
+
     // Pengaturan
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting', [SettingController::class, 'update'])->name('setting.update');
@@ -86,4 +93,9 @@ Route::middleware(['auth', 'role:murid'])->prefix('murid')->name('murid.')->grou
     // Secure PDF Downloads (uses session user to avoid ID manipulation)
     Route::get('/nilai/rapor/{semester_id}/pdf', [MuridNilaiController::class, 'exportRaporPdf'])->name('nilai.export.rapor');
     Route::get('/nilai/transkrip/pdf', [MuridNilaiController::class, 'exportTranskripPdf'])->name('nilai.export.transkrip');
+
+    // SNBP Eligible Selection
+    Route::get('/snbp', [MuridSnbpController::class, 'index'])->name('snbp.index');
+    Route::post('/snbp/daftar', [MuridSnbpController::class, 'register'])->name('snbp.daftar');
+    Route::post('/snbp/batal', [MuridSnbpController::class, 'withdraw'])->name('snbp.batal');
 });

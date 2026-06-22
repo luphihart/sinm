@@ -174,4 +174,69 @@ class RankingEngine
             'total_murid_paralel' => $parallelResult->total_murid_paralel ?? 0
         ];
     }
+
+    /**
+     * Get parallel SNBP ranking leaderboard for a department based on Semesters 1-5.
+     */
+    public function getSnbpRankingList(int $jurusanId)
+    {
+        $query = "
+            SELECT 
+                sub.murid_id,
+                sub.nama_lengkap,
+                sub.nis,
+                sub.nama_kelas,
+                sub.avg_nilai,
+                sub.total_nilai,
+                RANK() OVER (ORDER BY sub.avg_nilai DESC) as rank_snbp
+            FROM (
+                SELECT 
+                    m.id as murid_id,
+                    m.nama_lengkap,
+                    m.nis,
+                    k.nama_kelas,
+                    COALESCE(ROUND(AVG(n.nilai), 2), 0) as avg_nilai,
+                    COALESCE(ROUND(SUM(n.nilai), 2), 0) as total_nilai
+                FROM murid m
+                JOIN kelas k ON m.kelas_id = k.id
+                JOIN snbp_pendaftar sp ON sp.murid_id = m.id
+                LEFT JOIN nilai n ON n.murid_id = m.id AND n.semester_id IN (
+                    SELECT id FROM semester WHERE semester_ke IN (1, 2, 3, 4, 5)
+                )
+                WHERE k.jurusan_id = :jurusan_id
+                GROUP BY m.id, m.nama_lengkap, m.nis, k.nama_kelas
+            ) sub
+            ORDER BY rank_snbp ASC
+        ";
+
+        return DB::select($query, [
+            'jurusan_id' => $jurusanId
+        ]);
+    }
+
+    /**
+     * Get SNBP rank and details for a single student.
+     */
+    public function getSnbpStudentRanking(int $muridId)
+    {
+        $murid = DB::table('murid')
+            ->join('kelas', 'murid.kelas_id', '=', 'kelas.id')
+            ->select('murid.id', 'kelas.jurusan_id')
+            ->where('murid.id', $muridId)
+            ->first();
+
+        if (!$murid) {
+            return null;
+        }
+
+        $rankingList = $this->getSnbpRankingList($murid->jurusan_id);
+        
+        foreach ($rankingList as $rank) {
+            if ($rank->murid_id == $muridId) {
+                return $rank;
+            }
+        }
+
+        return null;
+    }
 }

@@ -36,4 +36,9 @@ class Murid extends Model
     {
         return $this->hasMany(Nilai::class);
     }
+
+    public function snbpPendaftar()
+    {
+        return $this->hasOne(SnbpPendaftar::class);
+    }
 }

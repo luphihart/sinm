@@ -289,6 +289,9 @@
                 <a href="{{ route('admin.nilai.index') }}" class="nav-link-custom {{ Route::is('admin.nilai.*') ? 'active' : '' }}">
                     <i class="fa-solid fa-clipboard-list me-3"></i> Data Nilai & Ranking
                 </a>
+                <a href="{{ route('admin.snbp.index') }}" class="nav-link-custom {{ Route::is('admin.snbp.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-award me-3"></i> Seleksi SNBP
+                </a>
                 <a href="{{ route('admin.setting.index') }}" class="nav-link-custom {{ Route::is('admin.setting.*') ? 'active' : '' }}">
                     <i class="fa-solid fa-gear me-3"></i> Pengaturan
                 </a>
@@ -296,6 +299,11 @@
                 <a href="{{ route('murid.dashboard') }}" class="nav-link-custom {{ Route::is('murid.dashboard') ? 'active' : '' }}">
                     <i class="fa-solid fa-chart-line me-3"></i> Dashboard Rapor
                 </a>
+                @if(\App\Models\Setting::get('snbp_menu_status', 'nonaktif') === 'aktif')
+                    <a href="{{ route('murid.snbp.index') }}" class="nav-link-custom {{ Route::is('murid.snbp.*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-award me-3"></i> Seleksi SNBP
+                    </a>
+                @endif
             @endif
         </div>
     </aside>

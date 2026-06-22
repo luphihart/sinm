@@ -14,10 +14,16 @@ class Jurusan extends Model
     protected $fillable = [
         'kode_jurusan',
         'nama_jurusan',
+        'kuota_snbp',
     ];
 
     public function kelas()
     {
         return $this->hasMany(Kelas::class);
+    }
+
+    public function murid()
+    {
+        return $this->hasManyThrough(Murid::class, Kelas::class);
     }
 }
