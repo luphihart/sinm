@@ -20,6 +20,14 @@ Sistem Informasi Nilai Murid (SINM) adalah aplikasi portal akademik berbasis web
     *   **Import Nilai Massal (1 Kelas):** Fitur untuk mengunggah nilai satu kelas penuh untuk semua mata pelajaran langsung dalam satu file Excel (grid template).
     *   Papan Peringkat Semester untuk Kelas dan Jurusan (Paralel) beserta opsi ekspor ke **Excel** dan **PDF**.
     *   Cetak Rapor Semester PDF & Transkrip Nilai Lengkap PDF.
+*   **Reset Password Murid:**
+    *   Reset password murid secara **individu** (satu per satu) atau **massal** (seluruh murid sekaligus).
+    *   Password akan direset ke default: `siswa123`.
+*   **Seleksi Eligible SNBP:**
+    *   **Konfigurasi SNBP:** Admin dapat menampilkan/menyembunyikan menu Seleksi SNBP di halaman murid dan menentukan batas waktu (deadline) pendaftaran.
+    *   **Kuota Per Jurusan:** Admin menentukan kuota eligible SNBP untuk masing-masing jurusan/kompetensi keahlian.
+    *   **Daftar Pendaftar & Ranking Otomatis:** Melihat daftar murid yang mendaftar seleksi SNBP per jurusan, otomatis dirangking berdasarkan rata-rata nilai Semester 1 s.d. 5 (paralel jurusan).
+    *   **Klasifikasi Eligible/Cadangan:** Murid dengan peringkat di dalam kuota otomatis berstatus **Eligible**, selebihnya berstatus **Cadangan**.
 *   **Pengaturan Sistem Global:** Mengatur Nama Aplikasi (secara global pada Title, Header, Login), Teks Footer, Identitas Sekolah untuk KOP Surat PDF, dan tanda tangan Kepala Sekolah.
 
 ### 2. Panel Murid (Siswa)
@@ -28,6 +36,20 @@ Sistem Informasi Nilai Murid (SINM) adalah aplikasi portal akademik berbasis web
 *   **Grafik Perkembangan (Line Chart):** Visualisasi tren rata-rata nilai murid dari semester ke semester (Semester 1 s.d. 6).
 *   **Rincian Nilai:** Daftar mata pelajaran beserta nilai akademis pada semester aktif.
 *   **Cetak Rapor & Transkrip Mandiri:** Mengunduh berkas PDF Rapor Semester dan PDF Transkrip Nilai Lengkap secara aman.
+*   **Seleksi Eligible SNBP (Opsional):**
+    *   Murid dapat **mendaftarkan diri** untuk ikut seleksi eligible SNBP sesuai jurusan masing-masing.
+    *   Murid dapat **membatalkan / mundur** dari seleksi selama batas waktu masih berlaku.
+    *   Melihat **peta persaingan sementara** (leaderboard) ranking SNBP di jurusan sendiri secara real-time.
+    *   Countdown otomatis menuju deadline pendaftaran.
+
+---
+
+## 📱 Responsif & Mobile-Friendly
+
+Seluruh halaman aplikasi telah dioptimasi untuk tampilan **mobile (HP)**, termasuk:
+*   Sidebar dengan toggle & backdrop overlay
+*   Tabel data yang responsif dengan card-based layout di layar kecil
+*   Dashboard, leaderboard, dan halaman SNBP yang mudah dibaca di HP
 
 ---
 
@@ -119,4 +141,4 @@ Setelah berhasil menjalankan seeder database, Anda dapat menggunakan akun-akun s
 *   **Username (NIS):** `22007` (Gerry Ramadhan)
 *   **Password:** `siswa123`
 
-*Catatan: Seluruh password murid yang di-seed default adalah `siswa123`.*
+*Catatan: Seluruh password murid yang di-seed default adalah `siswa123`. Jika password direset oleh admin (individu/massal), akan kembali ke `siswa123`.*
